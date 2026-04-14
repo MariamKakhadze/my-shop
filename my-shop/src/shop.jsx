@@ -12,27 +12,18 @@ var products = [
 ];
 
 function App() {
-
-  var stateArray = useState([]);
-  var cart = stateArray[0];
-  var setCart = stateArray[1];
-
-  var searchState = useState("");
-  var search = searchState[0];
-  var setSearch = searchState[1];
-
+  const [cart, setCart] = useState([]);
+  const [search, setSearch] = useState("");
   // --- FUNCTIONS ---
 
  
   function addToCart(product) {
     setCart(function (prev) {
-      // Find if item exists
       var existing = prev.find(function (item) {
         return item.id === product.id;
       });
 
       if (existing) {
-        // Map through to increase quantity
         return prev.map(function (item) {
           if (item.id === product.id) {
             return Object.assign({}, item, { qty: item.qty + 1 });
@@ -42,13 +33,13 @@ function App() {
         });
       }
 
-      // Add new item (using .concat instead of [...spread])
+      
       var newProduct = Object.assign({}, product, { qty: 1 });
       return prev.concat([newProduct]);
     });
   }
 
-  // Traditional function to remove from cart
+ 
   function removeFromCart(id) {
     setCart(function (prev) {
       return prev.filter(function (item) {
@@ -57,16 +48,14 @@ function App() {
     });
   }
 
-  // --- LOGIC ---
-
-  // Filtering products
+ 
   var filtered = products.filter(function (p) {
     var productName = p.name.toLowerCase();
     var searchTerm = search.toLowerCase();
     return productName.indexOf(searchTerm) !== -1;
   });
 
-  // Calculating totals
+  
   var totalQty = cart.reduce(function (sum, item) {
     return sum + item.qty;
   }, 0);
@@ -75,7 +64,7 @@ function App() {
     return sum + (item.price * item.qty);
   }, 0);
 
-  // --- RENDER ---
+ 
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: "1.5rem", fontFamily: "sans-serif" }}>
